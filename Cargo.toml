@@ -1,11 +1,11 @@
 [package]
-name = "flatpak-ext"
+name = "flatrun"
 version = "0.2.0"
 edition = "2021"
 authors = ["Ryan Brue <ryanbrue.dev@gmail.com>"]
 readme = "README.md"
-homepage = "https://linux-packaging-rs.github.io/flatpak-ext"
-repository = "https://github.com/linux-packaging-rs/flatpak-ext"
+homepage = "https://linux-packaging-rs.github.io/flatrun"
+repository = "https://github.com/linux-packaging-rs/flatrun"
 license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

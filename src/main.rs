@@ -10,7 +10,7 @@ pub mod utils;
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
 #[command(propagate_version = true)]
-/// Flatpak-ext: Tools to extend flatpak's functionality
+/// flatrun: Tools to extend flatpak's functionality
 struct Cli {
     /// Command to run
     #[command(subcommand)]

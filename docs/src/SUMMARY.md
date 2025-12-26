@@ -4,4 +4,4 @@
 
 # Commands
 
-- [flatpak-ext run](./flatpak-ext-run.md)
+- [flatrun run](./flatrun-run.md)
