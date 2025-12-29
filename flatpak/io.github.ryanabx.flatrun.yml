@@ -1,4 +1,4 @@
-id: io.github.ryanabx.flatrun
+id: org.ryanabx.flatrun
 runtime: org.freedesktop.Platform
 runtime-version: "23.08"
 sdk: org.freedesktop.Sdk
@@ -61,9 +61,9 @@ modules:
       - rm -rf /app/*
       # Install binary and data
       - install -Dm0755 target/release/flatrun /app/bin/flatrun
-      - install -Dm0644 data/flatrun.desktop /app/share/applications/io.github.ryanabx.flatrun.desktop
-      - install -Dm0644 data/flatrun.metainfo.xml /app/share/metainfo/io.github.ryanabx.flatrun.metainfo.xml
-      - install -Dm0644 flatrun.svg /app/share/icons/hicolor/scalable/apps/io.github.ryanabx.flatrun.svg
+      - install -Dm0644 data/flatrun.desktop /app/share/applications/org.ryanabx.flatrun.desktop
+      - install -Dm0644 data/flatrun.metainfo.xml /app/share/metainfo/org.ryanabx.flatrun.metainfo.xml
+      - install -Dm0644 flatrun.svg /app/share/icons/hicolor/scalable/apps/org.ryanabx.flatrun.svg
     sources:
       - type: git
         url: https://github.com/ryanabx/flatrun.git

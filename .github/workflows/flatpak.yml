@@ -12,6 +12,6 @@ jobs:
     - uses: actions/checkout@v4
     - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
       with:
-        bundle: io.github.ryanabx.flatrun.flatpak
-        manifest-path: flatpak/io.github.ryanabx.flatrun.yml
+        bundle: org.ryanabx.flatrun.flatpak
+        manifest-path: flatpak/org.ryanabx.flatrun.yml
         cache-key: flatpak-builder-${{ github.sha }}

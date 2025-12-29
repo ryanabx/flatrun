@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-    <id>io.github.ryanabx.flatrun</id>
+    <id>org.ryanabx.flatrun</id>
     <name>Flatrun</name>
-    <developer id="io.github.ryanabx">
+    <developer id="org.ryanabx">
         <name>Ryan Brue</name>
     </developer>
     <metadata_license>MIT</metadata_license>
@@ -17,7 +17,7 @@
         </ul>
         <h2 id="examples">Examples</h2>
         <p>Run Inkscape from flathub without installing it:</p>
-        <pre><code class="lang-sh">flatrun run-temp -<span class="hljs-selector-tag">a</span> org<span class="hljs-selector-class">.inkscape</span><span class="hljs-selector-class">.Inkscape</span>
+        <pre><code class="lang-sh">flatrun -<span class="hljs-selector-tag">a</span> org<span class="hljs-selector-class">.inkscape</span><span class="hljs-selector-class">.Inkscape</span>
 </code></pre>
         <h2 id="contributing">Contributing</h2>
         <p>There are many ways we can extend and automate flatpak to make it work in new exciting
@@ -25,11 +25,20 @@
             CONTRIBUTING.md</a> for more information!</p>
     </description>
     <developer_name>Ryan Brue</developer_name>
-    <update_contact>ryanbrue@gmail.com</update_contact>
-    <url type="homepage">https://ryanabx.github.io/flatrun</url>
-    <launchable type="desktop-id">io.github.ryanabx.flatrun.desktop</launchable>
+    <update_contact>ryanbrue.dev@gmail.com</update_contact>
+    <url type="homepage">https://ryanabx.org/flatrun</url>
+    <launchable type="desktop-id">org.ryanabx.flatrun.desktop</launchable>
     <content_rating type="oars-1.1" />
     <releases>
+        <release version="v0.3.0" date="2025-12-28">
+            <description>
+                <p>Reduced the scope of the application to be just a transient flatpak runner.</p>
+                <p>Renamed app back to Flatrun.</p>
+                <p>Refactored the codebase.</p>
+                <p>Added progress bar for Flatpak transactions.</p>
+                <p>Moved to Rust 2024.</p>
+            </description>
+        </release>
         <release version="v0.2.0" date="2024-06-02">
             <description>
                 <p>Rewrote most of the code as a lib.</p>
