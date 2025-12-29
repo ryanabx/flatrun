@@ -1,32 +1,36 @@
-use std::{env, fs::remove_dir_all, path::PathBuf};
+use std::{
+    env,
+    fs::remove_dir_all,
+    path::{Path, PathBuf},
+};
 
 use libflatpak::{
     gio::prelude::FileExt,
-    prelude::{InstallationExt, RemoteExt},
+    prelude::{InstallationExt, RefExt, RemoteExt},
     BundleRef, RefKind,
 };
-use rand::{distributions::Alphanumeric, thread_rng, Rng};
+use rand::{distr::Alphanumeric, Rng};
 
 #[derive(Debug)]
-pub enum FlatpakExtError {
+pub enum FlatrunError {
     Glib(libflatpak::glib::Error),
     IO(std::io::Error),
     Reqwest(reqwest::Error),
 }
 
-impl From<std::io::Error> for FlatpakExtError {
+impl From<std::io::Error> for FlatrunError {
     fn from(value: std::io::Error) -> Self {
         Self::IO(value)
     }
 }
 
-impl From<libflatpak::glib::Error> for FlatpakExtError {
+impl From<libflatpak::glib::Error> for FlatrunError {
     fn from(value: libflatpak::glib::Error) -> Self {
         Self::Glib(value)
     }
 }
 
-impl From<reqwest::Error> for FlatpakExtError {
+impl From<reqwest::Error> for FlatrunError {
     fn from(value: reqwest::Error) -> Self {
         Self::Reqwest(value)
     }
@@ -38,20 +42,22 @@ pub enum Flatpak {
     Download(String),
 }
 
-#[derive(Clone, Debug)]
-pub enum FlatpakOut {
-    Bundle(libflatpak::BundleRef),
-    Download(libflatpak::RemoteRef),
-}
-
 impl Flatpak {
+    pub fn new_from_uri(uri: String) -> Self {
+        Self::Bundle(if uri.starts_with("file://") {
+            Path::new(uri.split_once("file://").unwrap().1).to_path_buf()
+        } else {
+            Path::new(&uri).to_path_buf()
+        })
+    }
+
     pub fn convert_to_flatpak_out(
         &self,
         installation: &libflatpak::Installation,
         remote: &libflatpak::Remote,
         branch: &String,
         is_runtime: bool,
-    ) -> Result<FlatpakOut, FlatpakExtError> {
+    ) -> Result<FlatpakOut, FlatrunError> {
         match self {
             Flatpak::Bundle(path) => {
                 let bundle_path = libflatpak::gio::File::for_path(&path);
@@ -72,6 +78,21 @@ impl Flatpak {
                     libflatpak::gio::Cancellable::current().as_ref(),
                 )?))
             }
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub enum FlatpakOut {
+    Bundle(libflatpak::BundleRef),
+    Download(libflatpak::RemoteRef),
+}
+
+impl FlatpakOut {
+    pub fn app_id(&self) -> String {
+        match self {
+            FlatpakOut::Bundle(bundle_ref) => bundle_ref.name().unwrap_or_default().to_string(),
+            FlatpakOut::Download(remote_ref) => remote_ref.name().unwrap_or_default().to_string(),
         }
     }
 }
@@ -116,10 +137,10 @@ impl TryFrom<Remote> for libflatpak::Remote {
         Ok(remote)
     }
 
-    type Error = FlatpakExtError;
+    type Error = FlatrunError;
 }
 
-pub fn uri_to_bytes(uri: String) -> Result<libflatpak::glib::Bytes, FlatpakExtError> {
+pub fn uri_to_bytes(uri: String) -> Result<libflatpak::glib::Bytes, FlatrunError> {
     if uri.starts_with("file://") {
         Ok(
             libflatpak::gio::File::for_path(&uri.split_once("file://").unwrap().0)
@@ -158,7 +179,7 @@ impl Repo {
 
     /// Creates a new temp repo in the specified directory
     pub fn temp_in(path: PathBuf) -> Self {
-        let foldername: String = thread_rng()
+        let foldername: String = rand::rng()
             .sample_iter(&Alphanumeric)
             .take(7)
             .map(char::from)
@@ -177,7 +198,7 @@ impl Drop for Repo {
     }
 }
 
-pub fn get_installation(value: &Repo) -> Result<libflatpak::Installation, FlatpakExtError> {
+pub fn get_installation(value: &Repo) -> Result<libflatpak::Installation, FlatrunError> {
     match value {
         Repo::Temp(ref path) => {
             let repo_file = libflatpak::gio::File::for_path(path);
