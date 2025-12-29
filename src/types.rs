@@ -200,7 +200,7 @@ impl Drop for Repo {
 
 pub fn get_installation(value: &Repo) -> Result<libflatpak::Installation, FlatrunError> {
     match value {
-        Repo::Temp(ref path) => {
+        Repo::Temp(path) => {
             let repo_file = libflatpak::gio::File::for_path(path);
             // Create installation
             Ok(libflatpak::Installation::for_path(
@@ -209,7 +209,7 @@ pub fn get_installation(value: &Repo) -> Result<libflatpak::Installation, Flatru
                 libflatpak::gio::Cancellable::current().as_ref(),
             )?)
         }
-        Repo::Static { ref path, user } => {
+        Repo::Static { path, user } => {
             let repo_file = libflatpak::gio::File::for_path(path);
             Ok(libflatpak::Installation::for_path(
                 &repo_file,
